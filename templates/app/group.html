@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body{
+            background-color: black;
+        }
+
+        .group{
+            position: absolute;
+            left: 30%;
+            z-index: 1;
+            width: 30rem;
+            height: 20rem;
+            background-color: black;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: rgba(2, 244, 18, 0.817) 0px 2px 8px 0px;
+        }
+
+        .contain{
+            position: absolute;
+            width: 23rem;
+            height: 13rem;
+            z-index: 1;
+            background-color: black;
+            border-radius: 20px;
+            margin-left: 25rem;
+            box-shadow: rgba(31, 29, 29, 0.941) 0px 3px 8px;
+            padding: 20px;
+            display: none;
+        }
+        .contain>button{
+            position: absolute;
+            width: 20rem;
+            bottom: 20px;
+            background-color: green;
+        } 
+        .contain>button:hover{
+            background-color: rgba(0, 128, 0, 0.388);
+        }
+
+        .contain1{
+            border-radius: 20px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 2px 0px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <!-- start of navagition -->
+    <div class="container-fluid card" style="background-color: #050506;box-shadow: rgba(44, 112, 202, 0.04) 0px 0px 0px 1px, rgba(16, 87, 229, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;">
+        <div class="row">
+            <div class="col-lg-9">
+                <ul class="mt-2">
+                    <a  href="/Home/{{id}}/{{username}}/" style="color: white;text-decoration: none;" class="ms-4">Home</a>
+                    <a  href="/Home/{{id}}/{{username}}/Group/" style="color: white;text-decoration: none;" class="ms-4">Group</a>
+                    <a href="/Home/{{id}}/{{username}}/Profile/a2b$/" style="color: white;text-decoration: none;" class="ms-4">Profile</a>
+                </ul>
+            </div>
+            <div class="col-lg-1">
+                <i class="fa-solid fa-user-plus mt-2 btn-group ms-4" style="font-size: 30px;cursor: pointer;color: green;"></i>
+            </div>
+            <div class="col-lg-1">
+                <i class="fa-solid fa-folder-plus mt-2 btn_add" style="font-size: 30px;cursor: pointer;color: green;"></i>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mt-4 group" style="display: none;">
+            <input type="text" class="form-control" placeholder="Enter Your Group name" name="create_group">
+            <input type="file" class="form-control mt-4" placeholder="add your file" name="file">
+            <input type="submit" class="btn mt-4 btn-submit" style="width: 25rem;color: black;box-shadow: rgba(219, 3, 3, 0.16) 0px 1px 4px, rgba(42, 200, 7, 0.144) 0px 0px 0px 3px;position: absolute;bottom: 20px;">
+        </div>
+    </form>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="contain mt-4">
+            <input type="text" class="form-control mt-2" name="add_group" placeholder="Enter your group uuid">        
+            <button type="submit" class="btn mt-2 btn-sub">Submit</button>
+        </div>
+    </form>
+
+    <!-- start of group -->
+    {% for data in admin_data %}
+        <div class="container mt-4 contain1">
+           <div class="card contain1" style="background-color: black;padding: 10px;">
+               <div class="row">
+                   <div class="col-lg-2">
+                    <div class="card" style="width: 70px; height: 70px; border-radius: 50%; background-image: url('{{ data.picture.url }}');background-position: center;background-repeat: no-repeat;background-size: cover;"></div>
+                   </div>
+                   <div class="col-lg-5">
+                       <a href="/Home/{{id}}/{{username}}/{{data.groupname}}/" style="position: absolute;left: 10%;top: 20px;color: white;">{{data.groupname}}</a>
+                   </div>
+                   <div class="col-lg-4 mt-3">
+                    <input type="text" class="form-control" value="{{data.group_uuid}}">
+                   </div>
+               </div>
+           </div>
+        </div>
+    {% endfor %}
+    <!-- starting for the user data -->
+    {% for user in user_data %}
+        <div class="container mt-4 contain1">
+           <div class="card contain1" style="background-color: black;padding: 10px;">
+               <div class="row">
+                   <div class="col-lg-2">
+                       <div class="card" style="width: 70px; height: 70px;border-radius: 50%;background-image: url('{{user.picture.url}}');background-position: center;background-repeat: no-repeat;background-size: cover;"></div>
+                   </div>
+                   <div class="col-lg-5">
+                       <a href="/Home/{{id}}/{{username}}/{{user.groupname}}/" style="position: absolute;left: 10%;top: 20px;color: white;">{{user.groupname}}</a>
+                   </div>
+               </div>
+           </div>
+        </div>
+    
+    {% endfor %}
+
+    <script>
+        // this is from create group
+        const btn_group = document.querySelector(".btn-group")
+        const btn_submit = document.querySelector(".btn-submit")
+        const group_container = document.querySelector(".group")
+        // this is from cerate group
+        btn_group.addEventListener("click",()=>{
+            if (window.getComputedStyle(group_container).display == 'none' && window.getComputedStyle(add_container).display == 'none'){
+                group_container.style.display = 'block'
+            }else{
+                group_container.style.display = 'none'
+            }
+        })
+        btn_submit.addEventListener("click",()=>{
+            group_container.style.display = 'none'
+        })
+
+        
+        // this is from add group
+        const btn_add = document.querySelector('.btn_add')
+        const add_container = document.querySelector(".contain")
+        const btn_sm = document.querySelector(".btn-sub")
+        // this is from add group
+        btn_add.addEventListener("click",()=>{
+            if (window.getComputedStyle(add_container).display === 'none' && window.getComputedStyle(group_container).display == 'none'){
+                add_container.style.display = 'block'
+            }else{
+                add_container.style.display = 'none'
+            }
+        })
+
+        btn_sm.addEventListener("click",()=>{
+            add_container.style.display = 'none'
+        })
+    </script>
+</body>
+</html>
